@@ -32,6 +32,8 @@ import {
   statusCodes,
 } from '@react-native-community/google-signin';
 
+import {store, all, bounds} from './api'
+
 const config = {
   issuer: 'https://accounts.google.com',
   clientId: '998578964935-9d0usnij1f2ntrq4h9ks4p75d6v1hd0o.apps.googleusercontent.com',
@@ -62,6 +64,7 @@ class App extends Component {
     this._signIn = this._signIn.bind(this)
     this.storeUser = this.storeUser.bind(this)
     this._getAddress = this._getAddress.bind(this)
+    this._getCompleteLocation = this._getCompleteLocation.bind(this)
   }
 
   _getLocation = () => {
@@ -92,6 +95,13 @@ class App extends Component {
     })
   }
 
+  _getCompleteLocation = async () => {
+    location = await this._getLocation()
+    address  = await this._getAddress(location)
+
+    return {location, address};
+  }
+
   componentDidMount = async () => {
 
     // Configure Google sign in
@@ -100,16 +110,22 @@ class App extends Component {
       webClientId: oauthGoogleClientId
     });
 
-    // Get current location
-    const location = await this._getLocation()
-
-    // Get current address from location
-    const address = await this._getAddress(location)
+    // Store position changes
+    Geolocation.watchPosition( () => {
+      this._getCompleteLocation()
+      .then( newState => {
+        this.setState(newState)
+        store({location: this.state.location, user:this.state.userInfo})
+      })
+      .catch( err => {
+        console.error(err)
+      })
+    });
 
     // Initialize mongo db promise
     const dbPromise = Stitch.initializeDefaultAppClient(mongoAppId)
 
-    this.setState({location, address, dbPromise})
+    this.setState({dbPromise})
   }
 
   storeUser = () => {
@@ -148,7 +164,9 @@ class App extends Component {
       const userInfo  = await GoogleSignin.signIn();
       const logged_in = await GoogleSignin.isSignedIn();
       this.setState({userInfo, logged_in});
-      this.storeUser()
+      if( logged_in ){
+        this.storeUser()
+      }
     } 
     catch (error) {
       console.log('error', error)
