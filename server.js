@@ -21,9 +21,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.post('/store', (req, res) => {
 
-    console.log(req.body.location)
-    console.log(req.body.user)
-
+    console.log('Storing data', req.body.location, req.body.user)
+    
     coordsMap.set(req.body.location, req.body.user)
 
     res.sendStatus(200);
@@ -34,7 +33,7 @@ app.get('/', (req, res) => {
     coordsMap.forEach( (value, key, map) => {
         buffer.push( `${JSON.stringify(key)}: ${JSON.stringify(value)}` )
     });
-    let entries_str = buffer.join("\n");
+    let entries_str = buffer.length > 0 ? buffer.join("\n") : 'No entries found';
     res.status( 200 );
     res.send( entries_str );
 });

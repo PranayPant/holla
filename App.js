@@ -99,7 +99,10 @@ class App extends Component {
     location = await this._getLocation()
     address  = await this._getAddress(location)
 
-    return {location, address};
+    console.log(`Location is ${JSON.stringify(location)} at ${address}`)
+    return new Promise((resolve, reject) => {
+      resolve({location, address})
+    });
   }
 
   componentDidMount = async () => {
@@ -110,16 +113,19 @@ class App extends Component {
       webClientId: oauthGoogleClientId
     });
 
+    console.log('Mounting....')
+
     // Store position changes
     Geolocation.watchPosition( () => {
       this._getCompleteLocation()
-      .then( newState => {
-        this.setState(newState)
-        store({location: this.state.location, user:this.state.userInfo})
-      })
-      .catch( err => {
-        console.error(err)
-      })
+        .then( newState => {
+          console.log('New state is', newState)
+          this.setState(newState)
+          store({location: this.state.location, user:this.state.userInfo})
+        })
+        .catch( err => {
+          console.log(`Error storing user: ${JSON.stringify(err)}`)
+        })
     });
 
     // Initialize mongo db promise
