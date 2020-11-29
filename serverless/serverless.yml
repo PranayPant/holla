@@ -11,7 +11,7 @@
 #
 # Happy Coding!
 
-service: serverless
+service: holla-middleware
 # app and org for use with dashboard.serverless.com
 #app: your-app-name
 #org: your-org-name
@@ -23,6 +23,18 @@ frameworkVersion: '2'
 provider:
   name: aws
   runtime: nodejs12.x
+  environment:
+    DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}/*"
 
 # you can overwrite defaults here
 #  stage: dev
@@ -58,6 +70,12 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
+  within:
+    handler: handler.within
+    events:
+      - http:
+          path: /within
+          method: post
   store:
     handler: handler.store
     events:
@@ -107,13 +125,41 @@ functions:
 #      variable2: value2
 
 # you can add CloudFormation resource templates here
-#resources:
-#  Resources:
-#    NewResource:
-#      Type: AWS::S3::Bucket
-#      Properties:
-#        BucketName: my-new-bucket
-#  Outputs:
-#     NewOutput:
-#       Description: "Description for the output"
-#       Value: "Some output value"
+resources:
+  Resources:
+    HollaCoordsTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: hashKey
+            AttributeType: N
+          -
+            AttributeName: rangeKey
+            AttributeType: S
+          -
+            AttributeName: geohash
+            AttributeType: N
+        KeySchema:
+          -
+            AttributeName: hashKey
+            KeyType: HASH
+          -
+            AttributeName: rangeKey
+            KeyType: RANGE
+        LocalSecondaryIndexes:
+          -
+            IndexName: geohash-index
+            KeySchema:
+              -  
+                KeyType: HASH
+                AttributeName: hashKey
+              -  
+                KeyType: RANGE
+                AttributeName: geohash
+            Projection:
+              ProjectionType: ALL
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:provider.environment.DYNAMODB_TABLE}

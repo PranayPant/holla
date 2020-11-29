@@ -121,7 +121,10 @@ class App extends Component {
         .then( newState => {
           console.log('New state is', newState)
           this.setState(newState)
-          store({location: this.state.location, user:this.state.userInfo})
+          store({
+                location: JSON.stringify(this.state.location), 
+                user:JSON.stringify(this.state.userInfo)
+              })
         })
         .catch( err => {
           console.log(`Error storing user: ${JSON.stringify(err)}`)
