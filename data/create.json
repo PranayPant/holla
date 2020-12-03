@@ -1,0 +1,36 @@
+
+[
+    {
+        "user": {
+            "name": "Fat Chef",
+            "email": "fatchef@gmail.com"
+        },
+        "location": {
+            "latitude": 36.342700,
+            "longitude": -94.059930,
+            "address": "The Fat Chef"
+        }
+    },
+    {
+        "user": {
+            "name": "Starbucks",
+            "email": "starbucks@gmail.com"
+        },
+        "location": {
+            "latitude": 36.334530,
+            "longitude": -94.180400,
+            "address": "The Starbucks"
+        }
+    },
+    {
+        "user": {
+            "name": "Beaver Shores",
+            "email": "beavershores@gmail.com"
+        },
+        "location": {
+            "latitude": 36.319100,
+            "longitude": -94.018540,
+            "address": "The Lake House"
+        }
+    }
+]

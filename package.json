@@ -5,15 +5,23 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "start": "react-native start",
+    "bundle": "react-native start",
+    "clean": "rm -rf ./android/app/build",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "start": "yarn run clean && yarn run start-concurrently",
+    "start-concurrently": "node ./node_modules/concurrently/bin/concurrently.js 'npm:bundle' 'npm:android'"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.13.2",
     "@react-native-community/geolocation": "^2.0.2",
     "@react-native-community/google-signin": "^3.0.4",
+    "@react-native-community/netinfo": "^5.9.9",
+    "amazon-cognito-identity-js": "^4.5.5",
+    "aws-amplify": "^3.3.11",
+    "aws-amplify-react-native": "^4.2.9",
     "axios": "^0.19.2",
+    "axios-retry": "^3.1.9",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
@@ -21,17 +29,21 @@
     "mongodb-stitch-react-native-sdk": "^4.8.0",
     "react": "16.9.0",
     "react-native": "0.63.3",
-    "react-native-google-maps-services": "^0.5.1"
+    "react-native-fbsdk": "^3.0.0",
+    "react-native-google-maps-services": "^0.5.1",
+    "react-native-navigation": "^7.5.0"
   },
   "devDependencies": {
     "@babel/core": "7.8.4",
     "@babel/runtime": "7.8.4",
     "@react-native-community/eslint-config": "0.0.5",
     "babel-jest": "24.9.0",
+    "concurrently": "^5.3.0",
     "eslint": "6.8.0",
     "jest": "24.9.0",
     "metro-react-native-babel-preset": "0.56.4",
-    "react-test-renderer": "16.9.0"
+    "react-test-renderer": "16.9.0",
+    "wait-on": "^5.2.0"
   },
   "jest": {
     "preset": "react-native"

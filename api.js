@@ -1,9 +1,15 @@
 
 import axios from 'axios'
+import axiosRetry from 'axios-retry';
+ 
+axiosRetry(axios, { retries: 3 });
+axiosRetry(axios, { retryDelay: (retryCount) => {
+    return retryCount * 1000;
+}});
 
 export const store = (data) => {
     console.log('Performing post call to store data')
-    axios.post('http://172.17.49.17:3001/store', data)
+    axios.post('https://tgfme3djga.execute-api.us-east-1.amazonaws.com/development/store', data)
     .then( res => console.log(res.status))
     .catch( err => console.log(err))
 }

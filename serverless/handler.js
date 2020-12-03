@@ -30,7 +30,7 @@ const hello = async event => {
 const within = async event => {
   let {latitude, longitude, distance} = JSON.parse(event.body)
 
-  let message, code;
+  let message, code, data;
   try{
     const result = await geoTableManager.queryRadius({
       RadiusInMeter: distance,
@@ -40,7 +40,8 @@ const within = async event => {
       }
     })
     code = 200
-    message = `Retrieved items ${JSON.stringify(result)}`
+    message = 'Successfully retrieved items!'
+    data = result
   }
   catch(err){
     code = 500
@@ -51,6 +52,7 @@ const within = async event => {
     body: JSON.stringify(
       {
         message,
+        data,
         input: event,
       },
       null,
@@ -69,7 +71,7 @@ const store = async event => {
 
   try{
     await geoTableManager.putPoint({
-      RangeKeyValue: { S: user.email }, // Use this to ensure uniqueness of the hash/range pairs.
+      RangeKeyValue: { S: user.email ? user.email : user.profile_id }, // Use this to ensure uniqueness of the hash/range pairs.
       GeoPoint: { // An object specifying latitutde and longitude as plain numbers. Used to build the geohash, the hashkey and geojson data
           latitude: location.latitude,
           longitude: location.longitude

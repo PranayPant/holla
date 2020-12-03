@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">holla</string>
+    <string name="facebook_app_id">383371002871947</string>
+    <string name="fb_login_protocol_scheme">fb383371002871947</string>
 </resources>

@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-holla-dev-160635-authRole",
+      "UnauthRoleArn": "arn:aws:iam::923286072236:role/amplify-holla-dev-160635-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::923286072236:role/amplify-holla-dev-160635-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-holla-dev-160635-deployment",
+      "UnauthRoleName": "amplify-holla-dev-160635-unauthRole",
+      "StackName": "amplify-holla-dev-160635",
+      "StackId": "arn:aws:cloudformation:us-east-1:923286072236:stack/amplify-holla-dev-160635/52493480-3358-11eb-a9d3-0ec6977a61f1",
+      "AmplifyAppId": "d3czp4yg2wblq1"
+    }
+  }
+}
