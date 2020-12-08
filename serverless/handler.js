@@ -71,7 +71,7 @@ const store = async event => {
 
   try{
     await geoTableManager.putPoint({
-      RangeKeyValue: { S: user.email ? user.email : user.profile_id }, // Use this to ensure uniqueness of the hash/range pairs.
+      RangeKeyValue: { S: user.email ? user.email : user.profileId }, // Use this to ensure uniqueness of the hash/range pairs.
       GeoPoint: { // An object specifying latitutde and longitude as plain numbers. Used to build the geohash, the hashkey and geojson data
           latitude: location.latitude,
           longitude: location.longitude

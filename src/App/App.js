@@ -257,15 +257,15 @@ export default function App(props) {
                   title="Logout"
                 />
                 <Button
-                title='Push Settings Screen'
+                title='Go To Profile'
                 color='#710ce3'
                 onPress={() => Navigation.push(props.componentId, {
                   component: {
-                    name: 'Settings',
+                    name: 'Profile',
                     options: {
                       topBar: {
                         title: {
-                          text: 'Settings'
+                          text: 'Profile'
                         }
                       }
                     }
