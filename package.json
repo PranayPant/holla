@@ -28,7 +28,7 @@
     "geopoint": "^1.0.1",
     "mongodb-stitch-react-native-sdk": "^4.8.0",
     "react": "16.9.0",
-    "react-native": "0.63.3",
+    "react-native": "0.64.1",
     "react-native-fbsdk": "^3.0.0",
     "react-native-google-maps-services": "^0.5.1",
     "react-native-navigation": "^7.5.0"
